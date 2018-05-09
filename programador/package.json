@@ -1,0 +1,22 @@
+{
+  "name": "climo-programmer",
+  "version": "1.0.0",
+  "description": "Interfaz de Programacion para CLIMO",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/urayi/climo",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "Jose Polanco",
+  "license": "",
+  "devDependencies": {
+    "electron": "^1.8.6"
+  }
+}

@@ -7,12 +7,7 @@ const BrowserWindow = electron.BrowserWindow
 const path = require('path')
 const url = require('url')
 
-const dialog = require('dialog') // Load the dialogs component of the OS
-const fs = require('fs') // Load the File System to execute our common tasks (CRUD)
-/*require('electron-reload')(__dirname, {
-    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
-})*/
-
+// Load remote compnent that contains the dialog dependency
 
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -21,7 +16,7 @@ let mainWindow
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({ width: 400 })
+    mainWindow = new BrowserWindow({ width: 1000 })
 
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({
@@ -67,20 +62,3 @@ app.on('activate', function () {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.\
 
-dialog.showOpenDialog((fileNames) => {
-    // fileNames is an array that contains all the selected
-    if(fileNames === undefined){
-        console.log("No file selected");
-        return;
-    }
-
-    fs.readFile(filepath, 'utf-8', (err, data) => {
-        if(err){
-            alert("An error ocurred reading the file :" + err.message);
-            return;
-        }
-
-        // Change how to handle the file content
-        console.log("The file content is : " + data);
-    });
-});

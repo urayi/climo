@@ -197,7 +197,6 @@ document.getElementById('delete-file').addEventListener('click', function () {
 document.getElementById('number-id').addEventListener('keyup', function () {
 
     if (this.value && document.getElementById("actual-file").value) {
-        document.getElementById('flashing').disabled = false;
         const checkExist = []
         for (let dato of arrData) {
             if (dato[0] == this.value) {
@@ -211,6 +210,8 @@ document.getElementById('number-id').addEventListener('keyup', function () {
         if (checkExist.every(item => item === false)) {
             document.getElementById("show-key").textContent = '';
             document.getElementById("show-mac").textContent = '';
+        } else {
+            document.getElementById('flashing').disabled = false;
         }
     } else {
         document.getElementById('flashing').disabled = true;

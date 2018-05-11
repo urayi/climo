@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="apple-touch-icon" sizes="57x57" href="./assets/app-icon/png/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="./assets/app-icon/png/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="./assets/app-icon/png/apple-icon-72x72.png">
@@ -25,28 +26,42 @@
 </head>
 
 <body>
-    <div>
+    <div class="container">
         <div class="card-header">
             <img src="./assets/app-icon/logo.png" width="20%" alt="CLIMO">
         </div>
-        <div style="text-align:center;">
-            <input type="text" placeholder="Please select a file" id="actual-file" disabled="disabled" />
-            <input type="button" value="Choose a file" id="select-file" />
+        <div class="card-body" style="text-align:center;">
+            <div>
+                <input type="text" placeholder="Selccione un archivo" id="actual-file" disabled="disabled" />
+                <input type="button" value="Examinar" id="select-file" />
+            </div>
+            <br>
+            <br>
+            <p>
+                <span><strong>ID: </strong></span>
+                <input type="number" name="number-id" id="number-id" placeholder="Numero ID" disabled="disabled">
+            </p>
+            <p>
+                <span><strong>KEY: </strong></span><span id="show-key"></span>
+            </p>
+            <p>
+                <span><strong>MAC: </strong></span><span id="show-mac"></span>
+            </p>
+            <p>
+                <span><strong>PORT: </strong></span><span id="show-port"></span>
+            </p>
+            <textarea id="content-editor" cols="28" rows="5" class="small"></textarea>
+            <br>
+            <br>
+            <!-- input type="button" id="save-changes" value="Salvar" />
+            <input type="button" id="delete-file" value="Eliminar" /-->
         </div>
-        <br>
-        <br>
-        <textarea id="content-editor" rows="5" class="col-xs-12"></textarea>
-        <br>
-        <br>
-        <input type="button" id="save-changes" value="Save changes" />
-        <input type="button" id="delete-file" value="Delete file" />
-    </div>
-    <hr>
-    <div style="text-align:center;">
-        <p>
-            The file content will be the same as the editor.
-        </p>
-        <input type="button" value="Choose a file" id="create-new-file" />
+        <hr>
+        <div class="card-footer" style="text-align:center;">
+            <!-- input type="button" value="Choose a file" id="create-new-file" /-->
+            <input type="button" value="Procesar" id="flashing">
+        </div>
+        </div>
     </div>
     <script>
         require('./renderer.js')

@@ -157,6 +157,8 @@ document.getElementById('select-file').addEventListener('click', function () {
     dialog.showOpenDialog(function (fileNames) {
         if (fileNames === undefined) {
             console.log("No hay archivos Seleccionados");
+            document.getElementById('number-id').disabled = true;
+            document.getElementById('flashing').disabled = true;
         } else {
             document.getElementById("actual-file").value = fileNames[0];
             document.getElementById('number-id').disabled = false;
@@ -195,6 +197,7 @@ document.getElementById('delete-file').addEventListener('click', function () {
 document.getElementById('number-id').addEventListener('keyup', function () {
 
     if (this.value && document.getElementById("actual-file").value) {
+        document.getElementById('flashing').disabled = false;
         const checkExist = []
         for (let dato of arrData) {
             if (dato[0] == this.value) {
@@ -210,8 +213,14 @@ document.getElementById('number-id').addEventListener('keyup', function () {
             document.getElementById("show-mac").textContent = '';
         }
     } else {
+        document.getElementById('flashing').disabled = true;
         alert("Escriba el ID del dispositivo a configurar");
     }
 
 }, false);
 
+document.getElementById('flashing').addEventListener('click', function () {
+
+    alert("Esto inicia el flasheo");
+
+}, false);

@@ -2,24 +2,60 @@
 const { dialog } = require('electron').remote // Load the dialogs component of the OS
 const fs = require('fs') // Load the File System to execute our common tasks (CRUD)
 let arrData = []
+
 /*Declaracion de Funciones para escritura y lectura de archivos*/
 // Lectura de Archivos
-
 function readFile(filepath) {
+
+    fs.readFile(filepath, 'utf-8', function (err, data) {
+        if (err) {
+            alert("Un error ha ocurrido leyendo el archivo: " + err.message)
+            return
+        }
+        console.log("Leido:" + data)
+    });
+
+}
+
+function readBDFile(filepath) {
+
+    fs.readFile(filepath, 'utf-8', function (err, data) {
+        if (err) {
+            alert("Un error ha ocurrido leyendo el archivo: " + err.message)
+            return
+        }
+        arrData = csvToArray(data)
+        document.getElementById("content-editor").value = arrData
+    });
+
+}
+
+function readTargetFile(filepath) {
+
     fs.readFile(filepath, 'utf-8', function (err, data) {
         if (err) {
             alert("Un error ha ocurrido leyendo el archivo: " + err.message)
             return;
         }
-        arrData = csvToArray(data)
-        console.log(arrData)
-        document.getElementById("content-editor").value = arrData
-
+        document.getElementById("content-target-editor").value = data
     });
+
+}
+
+function readSpiffsFile(filepath) {
+
+    fs.readFile(filepath, 'utf-8', function (err, data) {
+        if (err) {
+            alert("Un error ha ocurrido leyendo el archivo: " + err.message)
+            return;
+        }
+        document.getElementById("content-spiffs").textContent = data
+    });
+
 }
 
 // Borrado de Archivos
-function deleteFile(filepath) {
+/* function deleteFile(filepath) {
     fs.exists(filepath, function (exists) {
         if (exists) {
             // File exists deletings
@@ -34,7 +70,7 @@ function deleteFile(filepath) {
             alert("El archivo no existe, no se puede borrar");
         }
     });
-}
+} */
 
 // Escritura de archivo para nuevo y actualizaciones
 function saveChanges(filepath, content) {
@@ -45,7 +81,8 @@ function saveChanges(filepath, content) {
             return;
         }
 
-        alert("El archivo se guardo satisfactoriamente");
+        console.log("El archivo se guardo satisfactoriamente");
+        readFile(filepath)
     });
 }
 
@@ -95,14 +132,10 @@ function csvToArray(strData) {
         // Variable que tendra el Valor encontrado que no es un delimitador
         var strMatchedValue;
 
-        // Now that we have our delimiter out of the way,
-        // let's check to see which kind of value we
-        // captured (quoted or unquoted).
         // Se verifica si es una comilla o no
         if (arrMatches[2] != undefined) {
 
-            // We found a quoted value. When we capture
-            // this value, unescape any double quotes.
+            // Encuentra comillas. y si son dobles las quita
             strMatchedValue = arrMatches[2].replace(
                 new RegExp("\"\"", "g"),
                 "\""
@@ -115,9 +148,7 @@ function csvToArray(strData) {
 
         }
 
-
-        // Now that we have our value string, let's add
-        // it to the data array.
+        // Se le agrega a arrData el valor encontrado
         arrData[arrData.length - 1].push(strMatchedValue);
     }
     // Se borra el primer elemento ya que son los ID
@@ -152,7 +183,7 @@ document.getElementById('create-new-file').addEventListener('click', function ()
 }, false);
 */
 
-// R Boton para selecionar archivo
+// R Boton para selecionar archivo de Base de Datos
 document.getElementById('select-file').addEventListener('click', function () {
     dialog.showOpenDialog(function (fileNames) {
         if (fileNames === undefined) {
@@ -160,9 +191,27 @@ document.getElementById('select-file').addEventListener('click', function () {
             document.getElementById('number-id').disabled = true;
             document.getElementById('flashing').disabled = true;
         } else {
+            readBDFile(fileNames[0]);
             document.getElementById("actual-file").value = fileNames[0];
             document.getElementById('number-id').disabled = false;
-            readFile(fileNames[0]);
+            if (document.getElementById("select-target-file").value &&
+                document.getElementById('number-id').value)
+                document.getElementById('flashing').disabled = false;
+        }
+    });
+}, false);
+
+document.getElementById('select-target-file').addEventListener('click', function () {
+    dialog.showOpenDialog(function (fileNames) {
+        if (fileNames === undefined) {
+            console.log("No hay archivos Seleccionados");
+            document.getElementById('flashing').disabled = true;
+        } else {
+            document.getElementById("target-file").value = fileNames[0];
+            readTargetFile(fileNames[0]);
+            if (document.getElementById("actual-file").value &&
+                document.getElementById('number-id').value)
+                document.getElementById('flashing').disabled = false;
         }
     });
 }, false);
@@ -200,18 +249,59 @@ document.getElementById('number-id').addEventListener('keyup', function () {
         const checkExist = []
         for (let dato of arrData) {
             if (dato[0] == this.value) {
-                document.getElementById("show-key").textContent = dato[1];
-                document.getElementById("show-mac").textContent = dato[2];
+                document.getElementById("number-key").textContent = dato[1];
+                document.getElementById("number-mac").textContent = dato[2];
                 checkExist.push(true)
             } else {
                 checkExist.push(false)
             }
         }
         if (checkExist.every(item => item === false)) {
-            document.getElementById("show-key").textContent = '';
-            document.getElementById("show-mac").textContent = '';
+            document.getElementById("number-key").textContent = '';
+            document.getElementById("number-mac").textContent = '';
+            document.getElementById('flashing').disabled = true;
         } else {
-            document.getElementById('flashing').disabled = false;
+            if (document.getElementById("target-file").value) {
+                // Actualizacion de archivo target o secrets.h
+                var contentTarget = document.getElementById("content-target-editor").value
+                var numberId = document.getElementById("number-id").value
+                var idTarget = new RegExp("(AP_SSID\\s\"CLIMO-)\\w+", "g")
+                var id2Target = new RegExp("(CLIMOID\\s\")\\w+", "g")
+                var numberKey = document.getElementById("number-key").textContent
+                var keyTarget = new RegExp("(KEY\\s\")\\w+", "g")
+                var numberMac = document.getElementById("number-mac").textContent
+                var macTarget = new RegExp("(MAC\\s\")\\w+", "g")
+                var filepath = document.getElementById("target-file").value
+                var content = contentTarget
+
+                //Reemplazo de contenido
+                content = content.replace(id2Target, "CLIMOID \"" + numberId)
+                content = content.replace(idTarget, "AP_SSID \"CLIMO-" + numberId)
+                content = content.replace(keyTarget, "KEY \"" + numberKey)
+                content = content.replace(macTarget, "MAC \"" + numberMac)
+
+                // Guardar Cambios
+                saveChanges(filepath, content)
+                document.getElementById("content-target-editor").value = content
+
+
+                //Modificacion Puerto
+                var port = document.getElementById("number-port").value | 0
+                document.getElementById("number-port").value = port
+                var spiffsPath = "/home/urayi/Documents/climo/climo/assets/spiffs_image.sh"
+                readSpiffsFile(spiffsPath)
+                setTimeout(() => {
+                    var portTarget = new RegExp("ttyUSB\\w+", "g")
+                    var contentSpiffs = document.getElementById("content-spiffs").value
+                    contentSpiffs = contentSpiffs.replace(portTarget, "ttyUSB" + port)
+                    saveChanges(spiffsPath, contentSpiffs)
+                    readSpiffsFile(spiffsPath)
+                }, 1000)
+
+                //Habilitar Boton "Procesar"
+                document.getElementById('flashing').disabled = false;
+            }
+
         }
     } else {
         document.getElementById('flashing').disabled = true;
@@ -220,8 +310,32 @@ document.getElementById('number-id').addEventListener('keyup', function () {
 
 }, false);
 
+//Cambio de Puerto
+
+document.getElementById('number-port').addEventListener('keyup', function () {
+
+    var port = document.getElementById("number-port").value | 0
+    var spiffsPath = "/home/urayi/Documents/climo/climo/assets/spiffs_image.sh"
+    readSpiffsFile(spiffsPath)
+    setTimeout(() => {
+        var portTarget = new RegExp("ttyUSB\\w+", "g")
+        var contentSpiffs = document.getElementById("content-spiffs").value
+        contentSpiffs = contentSpiffs.replace(portTarget, "ttyUSB" + port)
+        saveChanges(spiffsPath, contentSpiffs)
+        readSpiffsFile(spiffsPath)
+    }, 1000)
+
+}, false)
+
+// Flashear el Dispositivo
 document.getElementById('flashing').addEventListener('click', function () {
 
+    //1st Actualiza el archivo secrets.h
     alert("Esto inicia el flasheo");
+//ejecuta comandos de programacion
+//make menuconfig
+//make
+//make flash
+//make dist
 
 }, false);

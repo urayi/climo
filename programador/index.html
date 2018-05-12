@@ -32,9 +32,21 @@
         </div>
         <div class="card-body" style="text-align:center;">
             <div>
-                <input type="text" placeholder="Selccione un archivo" id="actual-file" disabled="disabled" />
+                <p>Archivo BD</p>
+                <input type="text" placeholder="Seleccione un archivo" id="actual-file" disabled="disabled" />
                 <input type="button" value="Examinar" id="select-file" />
             </div>
+            <br>
+            <textarea id="content-editor" cols="50" rows="3" class="small" disabled></textarea>
+            <br>
+            <br>
+            <div>
+                <p>Archivo secrets.h</p>
+                <input type="text" placeholder="Seleccione un archivo" id="target-file" disabled="disabled" />
+                <input type="button" value="Examinar" id="select-target-file" />
+            </div>
+            <br>
+            <textarea id="content-target-editor" cols="50" rows="3" class="small" disabled></textarea>
             <br>
             <br>
             <p>
@@ -42,17 +54,16 @@
                 <input type="number" name="number-id" id="number-id" placeholder="Numero ID" disabled="disabled">
             </p>
             <p>
-                <span><strong>KEY: </strong></span><span id="show-key"></span>
+                <span><strong>KEY: </strong></span><span id="number-key"></span>
             </p>
             <p>
-                <span><strong>MAC: </strong></span><span id="show-mac"></span>
+                <span><strong>MAC: </strong></span><span id="number-mac"></span>
             </p>
             <p>
-                <span><strong>PORT: </strong></span><span id="show-port"></span>
+                <span><strong>PORT: </strong></span><span>ttyUSB</span>
+                <span><input type="number" name="number-port" id="number-port" placeholder="ttyUSBX o ttyACMX"></span>
+                <textarea id="content-spiffs" style="display: none;" disabled></textarea>
             </p>
-            <textarea id="content-editor" cols="28" rows="5" class="small" disabled></textarea>
-            <br>
-            <br>
             <!-- input type="button" id="save-changes" value="Salvar" />
             <input type="button" id="delete-file" value="Eliminar" /-->
         </div>

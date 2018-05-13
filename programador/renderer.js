@@ -1,8 +1,11 @@
 /*Declaraci[on de Variables para escritura y lectura de archivos*/
 const { dialog } = require('electron').remote // Load the dialogs component of the OS
 const fs = require('fs') // Load the File System to execute our common tasks (CRUD)
+const { exec } = require('child_process');
 let arrData = []
 
+/* document.getElementById("target-file").value = "/home/urayi/Documents/climo/CLIMO_Pagina_ConfiguracionCLIMO/components/include/secrets.h"
+readTargetFile("/home/urayi/Documents/climo/CLIMO_Pagina_Configuracion/CLIMO/components/include/secrets.h") */
 /*Declaracion de Funciones para escritura y lectura de archivos*/
 // Lectura de Archivos
 function readFile(filepath) {
@@ -50,6 +53,18 @@ function readSpiffsFile(filepath) {
             return;
         }
         document.getElementById("content-spiffs").textContent = data
+    });
+
+}
+
+function readSdkConfigFile(filepath) {
+
+    fs.readFile(filepath, 'utf-8', function (err, data) {
+        if (err) {
+            alert("Un error ha ocurrido leyendo el archivo: " + err.message)
+            return;
+        }
+        document.getElementById("content-sdk").textContent = data
     });
 
 }
@@ -195,8 +210,11 @@ document.getElementById('select-file').addEventListener('click', function () {
             document.getElementById("actual-file").value = fileNames[0];
             document.getElementById('number-id').disabled = false;
             if (document.getElementById("select-target-file").value &&
-                document.getElementById('number-id').value)
+                document.getElementById('number-id').value) {
                 document.getElementById('flashing').disabled = false;
+                document.getElementById('config').disabled = false;
+            }
+
         }
     });
 }, false);
@@ -204,14 +222,24 @@ document.getElementById('select-file').addEventListener('click', function () {
 document.getElementById('select-target-file').addEventListener('click', function () {
     dialog.showOpenDialog(function (fileNames) {
         if (fileNames === undefined) {
-            console.log("No hay archivos Seleccionados");
+            var targetPath = "/home/urayi/Documents/climo/CLIMO_Pagina_Configuracion/CLIMO/components/include/secrets.h"
+            document.getElementById("target-file").value = targetPath
+            readTargetFile(targetPath);
             document.getElementById('flashing').disabled = true;
+            document.getElementById('config').disabled = true;
+            if (document.getElementById("actual-file").value &&
+                document.getElementById('number-id').value) {
+                document.getElementById('flashing').disabled = false;
+                document.getElementById('config').disabled = false;
+            }
+
         } else {
-            document.getElementById("target-file").value = fileNames[0];
+            document.getElementById("target-file").value = fileNames[0]
             readTargetFile(fileNames[0]);
             if (document.getElementById("actual-file").value &&
                 document.getElementById('number-id').value)
                 document.getElementById('flashing').disabled = false;
+            document.getElementById('config').disabled = false;
         }
     });
 }, false);
@@ -260,6 +288,7 @@ document.getElementById('number-id').addEventListener('keyup', function () {
             document.getElementById("number-key").textContent = '';
             document.getElementById("number-mac").textContent = '';
             document.getElementById('flashing').disabled = true;
+            document.getElementById('config').disabled = true;
         } else {
             if (document.getElementById("target-file").value) {
                 // Actualizacion de archivo target o secrets.h
@@ -288,47 +317,62 @@ document.getElementById('number-id').addEventListener('keyup', function () {
                 //Modificacion Puerto
                 var port = document.getElementById("number-port").value | 0
                 document.getElementById("number-port").value = port
-                var spiffsPath = "/home/urayi/Documents/climo/climo/assets/spiffs_image.sh"
+                var spiffsPath = "/home/urayi/Documents/climo/CLIMO_Pagina_Configuracion/spiffs_image"
+                var sdkConfigPath = "/home/urayi/Documents/climo/CLIMO_Pagina_Configuracion/sdkconfig"
                 readSpiffsFile(spiffsPath)
+                readSdkConfigFile(sdkConfigPath)
                 setTimeout(() => {
                     var portTarget = new RegExp("ttyUSB\\w+", "g")
                     var contentSpiffs = document.getElementById("content-spiffs").value
+                    var contentSdkConfig = document.getElementById("content-sdk").value
                     contentSpiffs = contentSpiffs.replace(portTarget, "ttyUSB" + port)
+                    contentSdkConfig = contentSdkConfig.replace(portTarget, "ttyUSB" + port)
                     saveChanges(spiffsPath, contentSpiffs)
+                    saveChanges(sdkConfigPath, contentSdkConfig)
                     readSpiffsFile(spiffsPath)
+                    readSdkConfigFile(sdkConfigPath)
                 }, 1000)
 
                 //Habilitar Boton "Procesar"
                 document.getElementById('flashing').disabled = false;
+                document.getElementById('config').disabled = false;
             }
 
         }
     } else {
         document.getElementById('flashing').disabled = true;
-        alert("Escriba el ID del dispositivo a configurar");
+        document.getElementById('config').disabled = true;
+        console.log("Escriba el ID del dispositivo a configurar");
     }
 
 }, false);
 
 //Cambio de Puerto
 
-document.getElementById('number-port').addEventListener('keyup', function () {
+document.getElementById('number-port').addEventListener('change', function () {
 
     var port = document.getElementById("number-port").value | 0
-    var spiffsPath = "/home/urayi/Documents/climo/climo/assets/spiffs_image.sh"
+    var spiffsPath = "/home/urayi/Documents/climo/CLIMO_Pagina_Configuracion/spiffs_image"
+    var sdkConfigPath = "/home/urayi/Documents/climo/CLIMO_Pagina_Configuracion/sdkconfig"
     readSpiffsFile(spiffsPath)
+    readSdkConfigFile(sdkConfigPath)
     setTimeout(() => {
         var portTarget = new RegExp("ttyUSB\\w+", "g")
         var contentSpiffs = document.getElementById("content-spiffs").value
+        var contentSdkConfig = document.getElementById("content-sdk").value
         contentSpiffs = contentSpiffs.replace(portTarget, "ttyUSB" + port)
+        contentSdkConfig = contentSdkConfig.replace(portTarget, "ttyUSB" + port)
         saveChanges(spiffsPath, contentSpiffs)
+        saveChanges(sdkConfigPath, contentSdkConfig)
         readSpiffsFile(spiffsPath)
+        readSdkConfigFile(sdkConfigPath)
     }, 1000)
+
 
 }, false)
 
 // Flashear el Dispositivo
-document.getElementById('flashing').addEventListener('click', function () {
+/* document.getElementById('flashing').addEventListener('click', function () {
 
     //1st Actualiza el archivo secrets.h
     alert("Esto inicia el flasheo");
@@ -338,4 +382,4 @@ document.getElementById('flashing').addEventListener('click', function () {
 //make flash
 //make dist
 
-}, false);
+}, false); */

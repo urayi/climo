@@ -63,18 +63,21 @@
                 <span><strong>PORT: </strong></span><span>ttyUSB</span>
                 <span><input type="number" name="number-port" id="number-port" placeholder="ttyUSBX o ttyACMX"></span>
                 <textarea id="content-spiffs" style="display: none;" disabled></textarea>
+                <textarea id="content-sdk" style="display: none;" disabled></textarea>
             </p>
             <!-- input type="button" id="save-changes" value="Salvar" />
             <input type="button" id="delete-file" value="Eliminar" /-->
         </div>
         <div class="card-footer" style="text-align:center;">
             <!-- input type="button" value="Choose a file" id="create-new-file" /-->
-            <input type="button" value="Procesar" id="flashing" disabled>
+            <input type="button" value="Flashear" id="flashing" disabled>
+            <input type="button" value="Configurar" id="config" disabled>
         </div>
         </div>
     </div>
     <script>
         require('./renderer.js')
+        require('./shell-commands.js')
     </script>
 </body>
 

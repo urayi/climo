@@ -6,7 +6,7 @@ document.getElementById('flashing').addEventListener('click', function () {
     document.getElementById('flashing').disabled = true
     document.getElementById('config').disabled = true
     console.log('Flashing...')
-    exec('../../flasher', (error, stdout, stderr) => {
+    exec('flasher', (error, stdout, stderr) => {
         if (error) {
             console.error(`exec error: ${error}`);
             document.getElementById('flashing').disabled = false
@@ -32,7 +32,7 @@ document.getElementById('config').addEventListener('click', function () {
     document.getElementById('flashing').disabled = true
     document.getElementById('config').disabled = true
     console.log('Flashing...')
-    exec('../../config', (error, stdout, stderr) => {
+    exec('config', (error, stdout, stderr) => {
         if (error) {
             console.error(`exec error: ${error}`);
             document.getElementById('flashing').disabled = false

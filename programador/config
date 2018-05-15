@@ -1,0 +1,5 @@
+#!/bin/sh
+cd ../../VESAT_mkspiffs_ESP32/
+make dist
+cd ../
+./spiffs_image

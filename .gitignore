@@ -3,3 +3,4 @@ flasher-climo/node_modules
 flasher-climo/out
 .vscode
 assets
+npm-debug.log

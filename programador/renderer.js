@@ -15,7 +15,7 @@ function readFile(filepath) {
             alert("Un error ha ocurrido leyendo el archivo: " + err.message)
             return
         }
-        console.log("Leido:" + data)
+        // console.log("Leido:" + data)
     });
 
 }
@@ -92,7 +92,7 @@ function saveChanges(filepath, content) {
     fs.writeFile(filepath, content, function (err) {
         if (err) {
             alert("Un error ha ocurrido actualizando el archivo" + err.message);
-            console.log(err);
+            // console.log(err);
             return;
         }
 
@@ -202,7 +202,7 @@ document.getElementById('create-new-file').addEventListener('click', function ()
 document.getElementById('select-file').addEventListener('click', function () {
     dialog.showOpenDialog(function (fileNames) {
         if (fileNames === undefined) {
-            console.log("No hay archivos Seleccionados");
+            // console.log("No hay archivos Seleccionados");
             document.getElementById('number-id').disabled = true;
             document.getElementById('flashing').disabled = true;
         } else {
@@ -342,7 +342,7 @@ document.getElementById('number-id').addEventListener('keyup', function () {
     } else {
         document.getElementById('flashing').disabled = true;
         document.getElementById('config').disabled = true;
-        console.log("Escriba el ID del dispositivo a configurar");
+        // console.log("Escriba el ID del dispositivo a configurar");
     }
 
 }, false);

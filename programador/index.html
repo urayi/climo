@@ -46,22 +46,35 @@
                 <input type="button" value="Examinar" id="select-target-file" />
             </div>
             <br>
-            <textarea id="content-target-editor" cols="50" rows="3" class="small" disabled></textarea>
+            <textarea id="content-target-editor" cols="50" rows="3" class="small" disabled style="display: none;"></textarea>
             <br>
             <br>
             <p>
-                <span><strong>ID: </strong></span>
+                <span>
+                    <strong>ID: </strong>
+                </span>
                 <input type="number" name="number-id" id="number-id" placeholder="Numero ID" disabled="disabled">
             </p>
             <p>
-                <span><strong>KEY: </strong></span><span id="number-key"></span>
+                <span>
+                    <strong>KEY: </strong>
+                </span>
+                <span id="number-key"></span>
             </p>
             <p>
-                <span><strong>MAC: </strong></span><span id="number-mac"></span>
+                <span>
+                    <strong>MAC: </strong>
+                </span>
+                <span id="number-mac"></span>
             </p>
             <p>
-                <span><strong>PORT: </strong></span><span>ttyUSB</span>
-                <span><input type="number" name="number-port" id="number-port" placeholder="ttyUSBX o ttyACMX"></span>
+                <span>
+                    <strong>PORT: </strong>
+                </span>
+                <span>ttyUSB</span>
+                <span>
+                    <input type="number" name="number-port" id="number-port" placeholder="ttyUSBX o ttyACMX">
+                </span>
                 <textarea id="content-spiffs" style="display: none;" disabled></textarea>
                 <textarea id="content-sdk" style="display: none;" disabled></textarea>
             </p>
@@ -73,7 +86,8 @@
             <input type="button" value="Flashear" id="flashing" disabled>
             <input type="button" value="Configurar" id="config" disabled>
         </div>
-        </div>
+        <textarea id="terminal" cols="50" rows="5" class="small" disabled></textarea>
+    </div>
     </div>
     <script>
         require('./renderer.js')

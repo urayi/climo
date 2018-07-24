@@ -4,8 +4,8 @@ const fs = require('fs') // Load the File System to execute our common tasks (CR
 const { exec } = require('child_process');
 let arrData = []
 
-/* document.getElementById("target-file").value = "/home/urayi/Documents/climo/CLIMO_Pagina_ConfiguracionCLIMO/components/include/secrets.h"
-readTargetFile("/home/urayi/Documents/climo/CLIMO_Pagina_Configuracion/CLIMO/components/include/secrets.h") */
+/* document.getElementById("target-file").value = "~/Documents/climo/CLIMO_Pagina_ConfiguracionCLIMO/components/include/secrets.h"
+readTargetFile("~/Documents/climo/CLIMO_Pagina_Configuracion/CLIMO/components/include/secrets.h") */
 /*Declaracion de Funciones para escritura y lectura de archivos*/
 // Lectura de Archivos
 function readFile(filepath) {
@@ -127,19 +127,19 @@ function csvToArray(strData) {
     // Array para mantener las conincidencias de la expresion regular en cada grupo.
     var arrMatches = null;
 
-    // Loop que se mantiene mientras exista una coincidencia en la expresion regular 
+    // Loop que se mantiene mientras exista una coincidencia en la expresion regular
     while (arrMatches = objPattern.exec(strData)) {
 
         // Encuentra el delimitador
         var strMatchedDelimiter = arrMatches[1];
 
-        //Chequea si hay un cambio de fila 
+        //Chequea si hay un cambio de fila
         if (
             strMatchedDelimiter.length &&
             strMatchedDelimiter !== strDelimiter
         ) {
 
-            // Agrega un nuevo array vacio al array de datos 
+            // Agrega un nuevo array vacio al array de datos
             arrData.push([]);
 
         }
@@ -222,7 +222,7 @@ document.getElementById('select-file').addEventListener('click', function () {
 document.getElementById('select-target-file').addEventListener('click', function () {
     dialog.showOpenDialog(function (fileNames) {
         if (fileNames === undefined) {
-            var targetPath = "/home/urayi/Documents/climo/CLIMO_Pagina_Configuracion/CLIMO/components/include/secrets.h"
+            var targetPath = "~/Documents/climo/CLIMO_Pagina_Configuracion/CLIMO/components/include/secrets.h"
             document.getElementById("target-file").value = targetPath
             readTargetFile(targetPath);
             document.getElementById('flashing').disabled = true;
@@ -245,7 +245,7 @@ document.getElementById('select-target-file').addEventListener('click', function
 }, false);
 
 /*
-// U Boton para salvado de archivos 
+// U Boton para salvado de archivos
 document.getElementById('save-changes').addEventListener('click', function () {
     var actualFilePath = document.getElementById("actual-file").value;
 
@@ -317,8 +317,8 @@ document.getElementById('number-id').addEventListener('keyup', function () {
                 //Modificacion Puerto
                 var port = document.getElementById("number-port").value | 0
                 document.getElementById("number-port").value = port
-                var spiffsPath = "/home/urayi/Documents/climo/CLIMO_Pagina_Configuracion/spiffs_image"
-                var sdkConfigPath = "/home/urayi/Documents/climo/CLIMO_Pagina_Configuracion/sdkconfig"
+                var spiffsPath = "~/Documents/climo/CLIMO_Pagina_Configuracion/spiffs_image"
+                var sdkConfigPath = "~/Documents/climo/CLIMO_Pagina_Configuracion/sdkconfig"
                 readSpiffsFile(spiffsPath)
                 readSdkConfigFile(sdkConfigPath)
                 setTimeout(() => {
@@ -352,8 +352,8 @@ document.getElementById('number-id').addEventListener('keyup', function () {
 document.getElementById('number-port').addEventListener('change', function () {
 
     var port = document.getElementById("number-port").value | 0
-    var spiffsPath = "/home/urayi/Documents/climo/CLIMO_Pagina_Configuracion/spiffs_image"
-    var sdkConfigPath = "/home/urayi/Documents/climo/CLIMO_Pagina_Configuracion/sdkconfig"
+    var spiffsPath = "~/Documents/climo/CLIMO_Pagina_Configuracion/spiffs_image"
+    var sdkConfigPath = "~/Documents/climo/CLIMO_Pagina_Configuracion/sdkconfig"
     readSpiffsFile(spiffsPath)
     readSdkConfigFile(sdkConfigPath)
     setTimeout(() => {

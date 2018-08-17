@@ -1,5 +1,4 @@
 #!/bin/sh
-cd ../../VESAT_mkspiffs_ESP32/
+cd ~/CLIMO_Pagina_Configuracion/VESAT_mkspiffs_ESP32/
 make dist
-cd ../
-./spiffs_image
+cd ~/CLIMO_Pagina_Configuracion/spiffs_image

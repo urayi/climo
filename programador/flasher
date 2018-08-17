@@ -1,4 +1,4 @@
 #!/bin/sh
-cd ../../
+cd ~/CLIMO_Pagina_Configuracion/
 make
 make flash

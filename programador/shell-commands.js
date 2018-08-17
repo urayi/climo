@@ -33,12 +33,16 @@ document.getElementById('flashing').addEventListener('click', function () {
     flasher.stdout.on('data', (data) => {
         x = document.getElementById('terminal').value
         document.getElementById('terminal').innerHTML = x + data
+        ocument.getElementById('flashing').disabled = false
+        document.getElementById('config').disabled = false
         document.getElementById('terminal').scrollTop =  document.getElementById('terminal').scrollHeight
     });
 
     flasher.stderr.on('data', (data) => {
         x = document.getElementById('terminal').value
         document.getElementById('terminal').innerHTML = x + data
+        ocument.getElementById('flashing').disabled = false
+        document.getElementById('config').disabled = false
         document.getElementById('terminal').scrollTop =  document.getElementById('terminal').scrollHeight
     });
 
@@ -57,6 +61,7 @@ document.getElementById('config').addEventListener('click', function () {
     document.getElementById('flashing').disabled = true
     document.getElementById('config').disabled = true
     const config = spawn('./config');
+    console.log('Configurando');
     /*     alert("Esto configura y carga la pagina web");
         document.getElementById('flashing').disabled = true
         document.getElementById('config').disabled = true
@@ -76,18 +81,25 @@ document.getElementById('config').addEventListener('click', function () {
         }) */
 
     config.stdout.on('data', (data) => {
+      console.log('Existe Salida');
         x = document.getElementById('terminal').value
         document.getElementById('terminal').innerHTML = x + data
+        ocument.getElementById('flashing').disabled = false
+        document.getElementById('config').disabled = false
         document.getElementById('terminal').scrollTop =  document.getElementById('terminal').scrollHeight
     });
 
     config.stderr.on('data', (data) => {
+      console.log('Existe Error');
         x = document.getElementById('terminal').value
         document.getElementById('terminal').innerHTML = x + data
+        ocument.getElementById('flashing').disabled = false
+        document.getElementById('config').disabled = false
         document.getElementById('terminal').scrollTop =  document.getElementById('terminal').scrollHeight
     });
 
     config.on('close', (code) => {
+      console.log('CExiste algo');
         x = document.getElementById('terminal').value
         document.getElementById('terminal').innerHTML = x + code
         document.getElementById('flashing').disabled = false
